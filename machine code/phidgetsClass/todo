@@ -1,0 +1,9 @@
++ check how to kill from python
+- do not activate the stepper if at the position
++ do not init stepper if already at the position
++ double check the PID
++ deal with saving the speed
++ go to error if not connecting phidgets
+
+- update the API doc
+- include the #0 and #1 for the API
