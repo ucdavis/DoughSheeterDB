@@ -12,6 +12,9 @@ dataFile = make_array('inH_P1.csv','outH_P1.csv','inH_P2.csv','outH_P2.csv',
                       'outH_P2.csv', 'inH_P3.csv', 'outH_P3.csv', 
                       'inH_P4.csv','outH_P4.csv')
 for file in np.arange(len(dataFile)):
+    csvData = open(file, 'r')
+    csvReader = csv.reader(csvData)
+    header = next(csvReader)
     heightIndex = header.index('height')
     timeIndex = header.index('unixTime')
     directionIndex = header.index('direction')
