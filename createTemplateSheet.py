@@ -23,6 +23,12 @@ coverSheet = sh.add_worksheet('CoverSheet', rows=100, cols=10, src_tuple=[templa
 analysis = sh.add_worksheet('Analysis', rows=100, cols=10, index=2)
 
 rawData = sh.add_worksheet('RawData', rows=33000, cols = 10, index =3)
+rawData.cell('A2').value = 'UnixTime'
+rawData.cell('B2').value = 'BeltNum'
+rawData.cell('C2').value = 'Direction'
+rawData.cell('D2').value = 'posNum'
+rawData.cell('E2').value = 'posLoc'
+rawData.cell('F2').value = 'height'
 
 sh.del_worksheet(sheet1)
 #getting the speed for belts and roller from the cover sheet
