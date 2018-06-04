@@ -34,4 +34,4 @@ for file in np.arange(len(dataFile)):
     print (len(coordList))
     lenFile = len(coordList)
 
-    wks.append_table(start='A3', end='B81', values=coordList, dimension='ROWS', overwrite=True)
+    wks.append_table(start='A3', end='B33000', values=coordList, dimension='ROWS', overwrite=True)
