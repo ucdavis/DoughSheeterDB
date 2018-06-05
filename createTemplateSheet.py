@@ -11,17 +11,15 @@ sh = gc.create('template')
 
 sheet1 = sh.worksheet_by_title('Sheet1')
 template = gc.open('SponsorCode-DoughVariety-yyyymmdd-HH:mm').id
-template
 
 coverFrTemplate= gc.open_by_key(template).worksheet_by_title('CoverSheet')
-
 coverFrTemplateID = coverFrTemplate.id
-coverFrTemplateID
 
 coverSheet = sh.add_worksheet('CoverSheet', rows=100, cols=10, src_tuple=[template,coverFrTemplateID], index=1)
 
 analysis = sh.add_worksheet('Analysis', rows=100, cols=10, index=2)
 
+#add headers
 rawData = sh.add_worksheet('RawData', rows=33000, cols = 10, index =3)
 rawData.cell('A2').value = 'UnixTime'
 rawData.cell('B2').value = 'BeltNum'
