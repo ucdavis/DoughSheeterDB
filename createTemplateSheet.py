@@ -61,6 +61,10 @@ append_csv_file('outH_P3.csv')
 append_csv_file('inH_P4.csv')
 append_csv_file('outH_P4.csv')
 
+#filter the height and find the average
+averageHID = gc.open_by_key(template).worksheet_by_title('averageHeight').id
+averageH= sh.add_worksheet('averageHeight', rows=40000, cols=6, src_tuple=[template,averageHID], index=4)
+
 sh.del_worksheet(sheet1)
 #getting the speed for belts and roller from the cover sheet
 belt1P1 = int(coverSheet.cell('C12').value )
