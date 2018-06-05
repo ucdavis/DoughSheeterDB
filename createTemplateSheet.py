@@ -15,12 +15,13 @@ template = gc.open('SponsorCode-DoughVariety-yyyymmdd-HH:mm').id
 coverFrTemplate= gc.open_by_key(template).worksheet_by_title('CoverSheet')
 coverFrTemplateID = coverFrTemplate.id
 
+#adding worksheets to the spreadsheet
 coverSheet = sh.add_worksheet('CoverSheet', rows=100, cols=10, src_tuple=[template,coverFrTemplateID], index=1)
-
 analysis = sh.add_worksheet('Analysis', rows=100, cols=10, index=2)
-
-#add headers
 rawData = sh.add_worksheet('RawData', rows=33000, cols = 10, index =3)
+sh.del_worksheet(sheet1)
+
+#add headers to raw data sheet
 rawData.cell('A2').value = 'UnixTime'
 rawData.cell('B2').value = 'BeltNum'
 rawData.cell('C2').value = 'Direction'
@@ -63,7 +64,7 @@ append_csv_file('outH_P4.csv')
 averageHID = gc.open_by_key(template).worksheet_by_title('averageHeight').id
 averageH= sh.add_worksheet('averageHeight', rows=40000, cols=6, src_tuple=[template,averageHID], index=4)
 
-sh.del_worksheet(sheet1)
+
 #getting the speed for belts and roller from the cover sheet
 belt1P1 = int(coverSheet.cell('C12').value )
 belt1P2 = int(coverSheet.cell('D12').value )
