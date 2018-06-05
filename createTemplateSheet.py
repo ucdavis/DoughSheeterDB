@@ -30,6 +30,37 @@ rawData.cell('D2').value = 'posNum'
 rawData.cell('E2').value = 'posLoc'
 rawData.cell('F2').value = 'height'
 
+#appending all csv files
+def append_csv_file(file):
+    csvData = open(file, 'r')
+    csvReader = csv.reader(csvData)
+    header = next(csvReader)
+    heightIndex = header.index('height')
+    timeIndex = header.index('unixTime')
+    directionIndex = header.index('direction')
+    posNumIndex = header.index('posNum')
+    posLocIndex = header.index('posLoc')
+    beltNumIndex = header.index('beltNum')
+    coordList = []
+    for row in csvReader:
+        time=row[timeIndex]
+        height = row[heightIndex]
+        direction = row[directionIndex]
+        posNum = row[posNumIndex]
+        posLoc = row[posLocIndex]
+        beltNum = row[beltNumIndex]
+        coordList.append([time,beltNum, direction, posNum,posLoc,height])
+    rawData.append_table(start='A2', end='G70000', values=coordList, dimension='ROWS', overwrite=False)
+    
+append_csv_file('inH_P1.csv')
+append_csv_file('outH_P1.csv')
+append_csv_file('inH_P2.csv')
+append_csv_file('outH_P2.csv')
+append_csv_file('inH_P3.csv')
+append_csv_file('outH_P3.csv')
+append_csv_file('inH_P4.csv')
+append_csv_file('outH_P4.csv')
+
 sh.del_worksheet(sheet1)
 #getting the speed for belts and roller from the cover sheet
 belt1P1 = int(coverSheet.cell('C12').value )
