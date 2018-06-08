@@ -36,7 +36,7 @@ def append_csv_file(file):
         posLoc = row[posLocIndex]
         beltNum = row[beltNumIndex]
         coordList.append([time,beltNum, direction, posNum,posLoc,height])
-    rawData.append_table(start='A2', end='G70000', values=coordList, dimension='ROWS', overwrite=False)
+    wks.append_table(start='A2', end='G70000', values=coordList, dimension='ROWS', overwrite=False)
 
 numPasses = 4
 files = make_array()
