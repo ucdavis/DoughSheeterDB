@@ -9,16 +9,15 @@ sh = gc.open('NewDoughSheet')
 wks = sh.add_worksheet('Raw data', rows=33000, cols= 10)
 #headers
 wks.cell('A2').value = 'UnixTime'
-wks.cell('B2').value = 'BeltNum'
-wks.cell('C2').value = 'Direction'
-wks.cell('D2').value = 'posNum'
-wks.cell('E2').value = 'posLoc'
-wks.cell('F2').value = 'height'
+wks.cell('B2').value = 'posNum'
+wks.cell('C2').value = 'posLoc'
+wks.cell('D2').value = 'height'
+wks.cell('E2').value = 'pass'
+wks.cell('F2').value = 'beltNum'
+wks.cell('G2').value = 'direction'
 
-dataFile = make_array('inH_P1.csv','outH_P1.csv','inH_P2.csv','outH_P2.csv',
-                      'outH_P2.csv', 'inH_P3.csv', 'outH_P3.csv', 
-                      'inH_P4.csv','outH_P4.csv')
-for file in np.arange(len(dataFile)):
+
+def append_csv_file(file):
     csvData = open(file, 'r')
     csvReader = csv.reader(csvData)
     header = next(csvReader)
@@ -37,4 +36,17 @@ for file in np.arange(len(dataFile)):
         posLoc = row[posLocIndex]
         beltNum = row[beltNumIndex]
         coordList.append([time,beltNum, direction, posNum,posLoc,height])
-    wks.append_table(start='A3', end='B33000', values=coordList, dimension='ROWS', overwrite=True)
+    rawData.append_table(start='A2', end='G70000', values=coordList, dimension='ROWS', overwrite=False)
+
+numPasses = 4
+files = make_array()
+for i in np.arange(numPasses):
+  baseString = "H_P" +str(i+1)+".csv"
+  inString = "in"+baseString
+  outString = "out" + baseString
+  files = np.append(files, inString)
+  files = np.append(files, outString)
+  
+for i in np.arange(len(files)):
+    append_csv_file(files.item(i))
+
