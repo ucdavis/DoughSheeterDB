@@ -22,12 +22,13 @@ rawData = sh.add_worksheet('RawData', rows=33000, cols = 10, index =3)
 sh.del_worksheet(sheet1)
 
 #add headers to raw data sheet
-rawData.cell('A2').value = 'UnixTime'
-rawData.cell('B2').value = 'BeltNum'
-rawData.cell('C2').value = 'Direction'
-rawData.cell('D2').value = 'posNum'
-rawData.cell('E2').value = 'posLoc'
-rawData.cell('F2').value = 'height'
+rawData.cell('A2').value = 'unixTime'
+rawData.cell('B2').value = 'posNum'
+rawData.cell('C2').value = 'posLoc'
+rawData.cell('D2').value = 'height'
+rawData.cell('E2').value = 'pass'
+rawData.cell('F2').value = 'beltNum'
+rawData.cell('G2').value = 'direction'
 
 #appending all csv files
 def append_csv_file(file):
@@ -51,14 +52,18 @@ def append_csv_file(file):
         coordList.append([time,beltNum, direction, posNum,posLoc,height])
     rawData.append_table(start='A2', end='G70000', values=coordList, dimension='ROWS', overwrite=False)
     
-append_csv_file('inH_P1.csv')
-append_csv_file('outH_P1.csv')
-append_csv_file('inH_P2.csv')
-append_csv_file('outH_P2.csv')
-append_csv_file('inH_P3.csv')
-append_csv_file('outH_P3.csv')
-append_csv_file('inH_P4.csv')
-append_csv_file('outH_P4.csv')
+numPasses = 4
+files = make_array()
+for i in np.arange(numPasses):
+    baseString = "H_P" +str(i+1)+".csv"
+    inString = "in"+baseString
+    outString = "out" + baseString
+    files = np.append(files, inString)
+    files = np.append(files, outString)
+  
+for i in np.arange(len(files)):
+    append_csv_file(files.item(i))
+
 
 #filter the height and find the average
 averageHID = gc.open_by_key(template).worksheet_by_title('averageHeight').id
