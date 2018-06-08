@@ -26,9 +26,40 @@ rawData.cell('A2').value = 'unixTime'
 rawData.cell('B2').value = 'posNum'
 rawData.cell('C2').value = 'posLoc'
 rawData.cell('D2').value = 'height'
-rawData.cell('E2').value = 'pass'
+rawData.cell('E2').value = 'passNum'
 rawData.cell('F2').value = 'beltNum'
 rawData.cell('G2').value = 'direction'
+
+#add columns and header to height csv file
+numPasses = 4
+files = make_array()
+inFile = make_array()
+outFile = make_array()
+for i in np.arange(numPasses):
+    baseString = "H_P" +str(i+1)+".csv"
+    inString = "in"+baseString
+    outString = "out" + baseString
+    inFile = np.append(inFile, instring)
+    outFile = np.append(outFile, outString)
+    files = np.append(files, inString)
+    files = np.append(files, outString)
+  
+with open('/Users/karissaxu/Downloads/InH_P1.csv',newline='') as f:
+    r = csv.reader(f)
+    data = [line for line in r]
+    new_data = []
+    passnum = 1
+    beltnum = 1
+    for i, item in enumerate(data):
+        item.append(passnum)
+        item.append(beltnum)
+        item.append('in')
+        new_data.append(item)
+        #new_data = new_data.append(new_col)
+with open('/Users/karissaxu/Downloads/InH_P1.csv','w',newline='') as f:
+    w = csv.writer(f)
+    w.writerow(['unixTime','posNum', 'posLoc','Height','pass', 'beltNum', 'direction'])
+    w.writerows(data)
 
 #appending all csv files
 def append_csv_file(file):
@@ -41,26 +72,20 @@ def append_csv_file(file):
     posNumIndex = header.index('posNum')
     posLocIndex = header.index('posLoc')
     beltNumIndex = header.index('beltNum')
+    passNumIndex=header.index('passNum')
     coordList = []
     for row in csvReader:
         time=row[timeIndex]
         height = row[heightIndex]
         direction = row[directionIndex]
+        passNum = row[passNumIndex]
         posNum = row[posNumIndex]
         posLoc = row[posLocIndex]
         beltNum = row[beltNumIndex]
-        coordList.append([time,beltNum, direction, posNum,posLoc,height])
+        coordList.append([time, posNum,posLoc,height, passNum, beltNum, direction])
     rawData.append_table(start='A2', end='G70000', values=coordList, dimension='ROWS', overwrite=False)
     
-numPasses = 4
-files = make_array()
-for i in np.arange(numPasses):
-    baseString = "H_P" +str(i+1)+".csv"
-    inString = "in"+baseString
-    outString = "out" + baseString
-    files = np.append(files, inString)
-    files = np.append(files, outString)
-  
+
 for i in np.arange(len(files)):
     append_csv_file(files.item(i))
 
@@ -69,6 +94,29 @@ for i in np.arange(len(files)):
 averageHID = gc.open_by_key(template).worksheet_by_title('averageHeight').id
 averageH= sh.add_worksheet('averageHeight', rows=40000, cols=6, src_tuple=[template,averageHID], index=4)
 
+#add header and upload force data
+with open('VF.csv',newline='') as f:
+    r = csv.reader(f)
+    data = [line for line in r]
+with open('VF.csv','w',newline='') as f:
+    w = csv.writer(f)
+    w.writerow(['unixTime','force'])
+    w.writerows(data)
+forceData = sh.add_worksheet('rawDataForce', rows=2000, cols=8, index=5)
+forceData.cell('A1').value = 'unixTime' 
+forceData.cell('B1').value = 'verticalForce'
+
+csvData = open('VF.csv', 'r')
+csvReader = csv.reader(csvData)
+header = next(csvReader)
+timeIndex = header.index('unixTime')
+forceIndex = header.index('force')
+coordList = []
+for row in csvReader:
+    time=row[timeIndex]
+    force = row[forceIndex]
+    coordList.append([time, force])
+forceData.append_table(start='A2', end='B2000', values=coordList, dimension='ROWS', overwrite=False)
 
 #getting the speed for belts and roller from the cover sheet
 belt1P1 = int(coverSheet.cell('C12').value )
