@@ -228,6 +228,11 @@ for row in csvReader:
     coordList.append([time, force])
 forceData.append_table(start='A2', end='B2000', values=coordList, dimension='ROWS', overwrite=False)
 
+operatorEmail = coverSheet.cell('C2').value
+sh.share(operatorEmail)
+sponsorEmail = coverSheet.cell('C4').value
+sh.share(sponsorEmail)
+
 #getting the speed for belts and roller from the cover sheet
 belt1P1 = int(coverSheet.cell('C12').value )
 belt1P2 = int(coverSheet.cell('D12').value )
