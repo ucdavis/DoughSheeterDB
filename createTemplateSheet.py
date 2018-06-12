@@ -22,13 +22,13 @@ rawData = sh.add_worksheet('RawData', rows=33000, cols = 10, index =3)
 sh.del_worksheet(sheet1)
 
 #add headers to raw data sheet
-rawData.cell('A2').value = 'unixTime'
-rawData.cell('B2').value = 'posNum'
-rawData.cell('C2').value = 'posLoc'
-rawData.cell('D2').value = 'height'
-rawData.cell('E2').value = 'passNum'
-rawData.cell('F2').value = 'beltNum'
-rawData.cell('G2').value = 'direction'
+rawData.cell('A1').value = 'unixTime'
+rawData.cell('B1').value = 'posNum'
+rawData.cell('C1').value = 'posLoc'
+rawData.cell('D1').value = 'height'
+rawData.cell('E1').value = 'passNum'
+rawData.cell('F1').value = 'beltNum'
+rawData.cell('G1').value = 'direction'
 
 #add columns and header to height csv file
 numPasses = 4
@@ -44,7 +44,7 @@ for i in np.arange(numPasses):
     files = np.append(files, inString)
     files = np.append(files, outString)
   
-with open('/Users/karissaxu/Downloads/InH_P1.csv',newline='') as f:
+with open('inH_P1.csv',newline='') as f:
     r = csv.reader(f)
     data = [line for line in r]
     new_data = []
@@ -55,12 +55,122 @@ with open('/Users/karissaxu/Downloads/InH_P1.csv',newline='') as f:
         item.append(beltnum)
         item.append('in')
         new_data.append(item)
-        #new_data = new_data.append(new_col)
-with open('/Users/karissaxu/Downloads/InH_P1.csv','w',newline='') as f:
+with open('inH_P1.csv','w',newline='') as f:
     w = csv.writer(f)
-    w.writerow(['unixTime','posNum', 'posLoc','Height','pass', 'beltNum', 'direction'])
+    w.writerow(['unixTime','posNum', 'posLoc','height','passNum', 'beltNum', 'direction'])
     w.writerows(data)
 
+with open('outH_P1.csv',newline='') as f:
+    r = csv.reader(f)
+    data = [line for line in r]
+    new_data = []
+    passnum = 1
+    beltnum = 0
+    for i, item in enumerate(data):
+        item.append(passnum)
+        item.append(beltnum)
+        item.append('out')
+        new_data.append(item)
+with open('outH_P1.csv','w',newline='') as f:
+    w = csv.writer(f)
+    w.writerow(['unixTime','posNum', 'posLoc','height','passNum', 'beltNum', 'direction'])
+
+with open('InH_P2.csv',newline='') as a:
+    r = csv.reader(a)
+    data = [line for line in r]
+    new_data = []
+    passnum = 2
+    beltnum = 0
+    for i, item in enumerate(data):
+        item.append(passnum)
+        item.append(beltnum)
+        item.append('in')
+        new_data.append(item)
+with open('InH_P2.csv','w',newline='') as a:
+    w = csv.writer(a)
+    w.writerow(['unixTime','posNum', 'posLoc','height','passNum', 'beltNum', 'direction'])
+    w.writerows(data)
+    
+with open('outH_P2.csv',newline='') as f:
+    r = csv.reader(f)
+    data = [line for line in r]
+    new_data = []
+    passnum = 2
+    beltnum = 1
+    for i, item in enumerate(data):
+        item.append(passnum)
+        item.append(beltnum)
+        item.append('out')
+        new_data.append(item)
+with open('outH_P2.csv','w',newline='') as f:
+    w = csv.writer(f)
+    w.writerow(['unixTime','posNum', 'posLoc','height','passNum', 'beltNum', 'direction'])
+    w.writerows(data)
+    
+with open('inH_P3.csv',newline='') as f:
+    r = csv.reader(f)
+    data = [line for line in r]
+    new_data = []
+    passnum = 3
+    beltnum = 1
+    for i, item in enumerate(data):
+        item.append(passnum)
+        item.append(beltnum)
+        item.append('in')
+        new_data.append(item)
+with open('inH_P3.csv','w',newline='') as f:
+    w = csv.writer(f)
+    w.writerow(['unixTime','posNum', 'posLoc','height','passNum', 'beltNum', 'direction'])
+    w.writerows(data)
+
+with open('outH_P3.csv',newline='') as f:
+    r = csv.reader(f)
+    data = [line for line in r]
+    new_data = []
+    passnum = 3
+    beltnum = 0
+    for i, item in enumerate(data):
+        item.append(passnum)
+        item.append(beltnum)
+        item.append('out')
+        new_data.append(item)
+with open('outH_P3.csv','w',newline='') as f:
+    w = csv.writer(f)
+    w.writerow(['unixTime','posNum', 'posLoc','height','passNum', 'beltNum', 'direction'])
+    w.writerows(data)
+
+with open('inH_P4.csv',newline='') as f:
+    r = csv.reader(f)
+    data = [line for line in r]
+    new_data = []
+    passnum = 4
+    beltnum = 0
+    for i, item in enumerate(data):
+        item.append(passnum)
+        item.append(beltnum)
+        item.append('in')
+        new_data.append(item)
+with open('inH_P4.csv','w',newline='') as f:
+    w = csv.writer(f)
+    w.writerow(['unixTime','posNum', 'posLoc','height','passNum', 'beltNum', 'direction'])
+    w.writerows(data)
+
+with open('outH_P4.csv',newline='') as f:
+    r = csv.reader(f)
+    data = [line for line in r]
+    new_data = []
+    passnum = 4
+    beltnum = 1
+    for i, item in enumerate(data):
+        item.append(passnum)
+        item.append(beltnum)
+        item.append('out')
+        new_data.append(item)
+with open('outH_P4.csv','w',newline='') as f:
+    w = csv.writer(f)
+    w.writerow(['unixTime','posNum', 'posLoc','height','passNum', 'beltNum', 'direction'])
+    w.writerows(data)
+    
 #appending all csv files
 def append_csv_file(file):
     csvData = open(file, 'r')
