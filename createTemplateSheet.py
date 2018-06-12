@@ -199,11 +199,6 @@ def append_csv_file(file):
 for i in np.arange(len(files)):
     append_csv_file(files.item(i))
 
-
-#filter the height and find the average
-averageHID = gc.open_by_key(template).worksheet_by_title('averageHeight').id
-averageH= sh.add_worksheet('averageHeight', rows=40000, cols=6, src_tuple=[template,averageHID], index=4)
-
 #add header and upload force data
 with open('VF.csv',newline='') as f:
     r = csv.reader(f)
