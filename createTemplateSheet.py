@@ -10,7 +10,7 @@ sh = gc.create('template')
 #create(title, parent_id=None)
 
 sheet1 = sh.worksheet_by_title('Sheet1')
-template = gc.open('SponsorCode-DoughVariety-yyyymmdd-HH:mm').id
+template = gc.open('templateTest').id
 
 coverFrTemplate= gc.open_by_key(template).worksheet_by_title('CoverSheet')
 coverFrTemplateID = coverFrTemplate.id
@@ -228,10 +228,20 @@ for row in csvReader:
     coordList.append([time, force])
 forceData.append_table(start='A2', end='B2000', values=coordList, dimension='ROWS', overwrite=False)
 
+#sharing to operator and sponsor by email
 operatorEmail = coverSheet.cell('C2').value
 sh.share(operatorEmail)
 sponsorEmail = coverSheet.cell('C4').value
 sh.share(sponsorEmail)
+
+# add filter sheets
+inHeightID = gc.open_by_key(template).worksheet_by_title('inHeight').id
+outHeightID = gc.open_by_key(template).worksheet_by_title('outHeight').id
+consolidateID = gc.open_by_key(template).worksheet_by_title('consolidatedData').id
+inHeight = sh.add_worksheet('inHeight', rows=15000, cols=6, src_tuple=[template,inHeightID], index=4)
+outHeight = sh.add_worksheet('outHeight', rows=15000, cols=6, src_tuple=[template,outHeightID], index=5)
+outHeight = sh.add_worksheet('consolidatedData', rows=100, cols=8, src_tuple=[template,consolidateID], index=6)
+
 
 #getting the speed for belts and roller from the cover sheet
 passNumber = int(coverSheet.cell('B8').value)
