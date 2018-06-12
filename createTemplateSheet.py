@@ -234,15 +234,37 @@ sponsorEmail = coverSheet.cell('C4').value
 sh.share(sponsorEmail)
 
 #getting the speed for belts and roller from the cover sheet
-belt1P1 = int(coverSheet.cell('C12').value )
-belt1P2 = int(coverSheet.cell('D12').value )
-belt1P3 = int(coverSheet.cell('E12').value )
-belt1P4 = int(coverSheet.cell('F12').value )
-belt0P1 = int(coverSheet.cell('C14').value)
-belt0P2 = int(coverSheet.cell('D14').value)
-belt0P3 = int(coverSheet.cell('E14').value)
-belt0P4 = int(coverSheet.cell('F14').value)
-rollerP1= int(coverSheet.cell('C16').value)
-rollerP2= int(coverSheet.cell('D16').value)
-rollerP3= int(coverSheet.cell('E16').value)
-rollerP4= int(coverSheet.cell('F16').value)
+passNumber = int(coverSheet.cell('B8').value)
+for i in np.arange(passNumber):
+    if i ==0:
+        belt1P1 = int(coverSheet.cell('E'+str(i+2)).value)
+        belt0P1 = int(coverSheet.cell('G'+str(i+2)).value)
+        rollerP1= int(coverSheet.cell('I'+str(i+2)).value)
+    if i ==1:
+        belt1P2 = int(coverSheet.cell('E'+str(i+2)).value )
+        belt0P2 = int(coverSheet.cell('G'+str(i+2)).value )
+        rollerP2= int(coverSheet.cell('I'+str(i+2)).value)
+    if i ==2:
+        belt1P3 = int(coverSheet.cell('E'+str(i+2)).value )
+        belt0P3 = int(coverSheet.cell('G'+str(i+2)).value )
+        rollerP3= int(coverSheet.cell('I'+str(i+2)).value)
+    if i ==3:
+        belt1P4 = int(coverSheet.cell('E'+str(i+2)).value )
+        belt0P4 = int(coverSheet.cell('G'+str(i+2)).value )
+        rollerP4= int(coverSheet.cell('I'+str(i+2)).value)
+    if i == 4:
+        belt1P5 = int(coverSheet.cell('E'+str(i+2)).value )
+        belt0P5 = int(coverSheet.cell('G'+str(i+2)).value )
+        rollerP5= int(coverSheet.cell('I'+str(i+2)).value)
+    if i ==5:
+        belt1P6 = int(coverSheet.cell('E'+str(i+2)).value )
+        belt0P6 = int(coverSheet.cell('G'+str(i+2)).value )
+        rollerP6= int(coverSheet.cell('I'+str(i+2)).value)
+    if i ==6:
+        belt1P7 = int(coverSheet.cell('E'+str(i+2)).value )
+        belt0P7 = int(coverSheet.cell('G'+str(i+2)).value )
+        rollerP7= int(coverSheet.cell('I'+str(i+2)).value)
+    if i ==7:
+        belt1P8 = int(coverSheet.cell('E'+str(i+2)).value )
+        belt0P8 = int(coverSheet.cell('G'+str(i+2)).value )
+        rollerP8= int(coverSheet.cell('I'+str(i+2)).value)
