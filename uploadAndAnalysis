@@ -1,4 +1,5 @@
 # append all data
+sh = gc.open(fileName)
 rawData = sh.add_worksheet('RawData', rows=33000, cols = 10, index =2)
 
 #add header and upload csv files
@@ -214,3 +215,10 @@ inHeight = sh.add_worksheet('inHeight', rows=15000, cols=6, src_tuple=[template,
 outHeight = sh.add_worksheet('outHeight', rows=15000, cols=6, src_tuple=[template,outHeightID], index=5)
 consolidate = sh.add_worksheet('consolidatedData', rows=15000, cols=6, src_tuple=[template,consolidateID], index=6)
 analysis = sh.add_worksheet('analysis', rows=15000, cols=6, src_tuple=[template,analysisID], index=7)
+
+#share to operator and sponsor
+#sharing to operator and sponsor by email
+operatorEmail = coverSheet.cell('C2').value
+sh.share(operatorEmail)
+sponsorEmail = coverSheet.cell('C4').value
+sh.share(sponsorEmail)
