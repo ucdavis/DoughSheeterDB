@@ -15,6 +15,9 @@ import sys
 import phidgetsClass_ext
 import laserClass_ext
 
+#authorize
+import authorizeAndGetParameter
+
 #######################################
 # To manage interruption
 #######################################
@@ -85,7 +88,7 @@ f.write(str(time.time() - start) + ': End of initialization of the stepper motor
 # 1 - Move the stepper motor (Wait for the motor to reach its final position)
 print "Move the stepper"
 f.write(str(time.time() - start) + ': Change gap\n')
-phidgets.moveStepper(20)
+phidgets.moveStepper(rollerGapP1)
 f.write(str(time.time() - start) + ': Gap changed\n')
 
 
@@ -117,7 +120,7 @@ thread_lc.start()
 print "Start the rollers"
 phidgets.set_rsFileName(expPath + "rollers_0.txt")
 #Movement in direction of Belt 11 to Belt 10
-thread_r = Thread(target=phidgets.runMotorsLoop, args=(-1,85,))
+thread_r = Thread(target=phidgets.runMotorsLoop, args=(-1,rollerSpeedP1,))
 thread_r.start()
 f.write(str(time.time() - start) + ': Rollers started\n')
 
@@ -127,7 +130,7 @@ print "Start the conveyors"
 phidgets.set_csFileName(expPath + "conveyor_0.txt")
 # Direc 2,1 Movement from 11 to 10. 
 # Arguments are Belt 0, Belt 1
-thread_c = Thread(target=phidgets.runConveyors, args=(2,90,1,80))
+thread_c = Thread(target=phidgets.runConveyors, args=(2,belt0P1,1,belt1P1))
 thread_c.start()
 f.write(str(time.time() - start) + ': Conveyors started\n')
 
@@ -183,7 +186,7 @@ print "Change direction"
 ###################
 # 1 - Move the stepper motor (Wait for the motor to reach its fianl position)
 print "Move the stepper"
-phidgets.moveStepper(16)
+phidgets.moveStepper(rollerGapP2)
 
 ####################
 # 2 - Start laser
@@ -212,7 +215,7 @@ thread_l1.start()
 # 3 - Start the rollers
 print "Start the rollers"
 phidgets.set_rsFileName(expPath + "rollers_1.txt")
-thread_r = Thread(target=phidgets.runMotorsLoop, args=(1,85,))
+thread_r = Thread(target=phidgets.runMotorsLoop, args=(1,rollerSpeedP2,))
 thread_r.start()
 
 #########################
@@ -221,7 +224,7 @@ print "Start the conveyors"
 phidgets.set_csFileName(expPath + "conveyor_1.txt")
 # Direc 1,2 Movement from 10(In) to 11(Out). 
 # Arguments are Belt 0, Belt 1
-thread_c = Thread(target=phidgets.runConveyors, args=(1,80,2,90))
+thread_c = Thread(target=phidgets.runConveyors, args=(1,belt0P2,2,belt1P2))
 thread_c.start()
 
 
@@ -277,7 +280,7 @@ print "Change direction"
 ###################
 # 1 - Move the stepper motor (Wait for the motor to reach its fianl position)
 print "Move the stepper"
-phidgets.moveStepper(10)
+phidgets.moveStepper(rollerGapP3)
 
 ####################
 # 2 - Start laser
@@ -306,14 +309,14 @@ thread_l1.start()
 # 3 - Start the rollers
 print "Start the rollers"
 phidgets.set_rsFileName(expPath + "rollers_1.txt")
-thread_r = Thread(target=phidgets.runMotorsLoop, args=(-1,85,))
+thread_r = Thread(target=phidgets.runMotorsLoop, args=(-1,rollerSpeedP3,))
 thread_r.start()
 
 #########################
 # 4 - Start the conveyors
 print "Start the conveyors"
 phidgets.set_csFileName(expPath + "conveyor_1.txt")
-thread_c = Thread(target=phidgets.runConveyors, args=(2,90,1,80))
+thread_c = Thread(target=phidgets.runConveyors, args=(2,belt0P3,1,belt1P3))
 thread_c.start()
 
 
@@ -370,7 +373,7 @@ print "Change direction"
 ###################
 # 1 - Move the stepper motor (Wait for the motor to reach its fianl position)
 print "Move the stepper"
-phidgets.moveStepper(6)
+phidgets.moveStepper(rollerGapP4)
 
 ####################
 # 2 - Start laser
@@ -399,14 +402,14 @@ thread_l1.start()
 # 3 - Start the rollers
 print "Start the rollers"
 phidgets.set_rsFileName(expPath + "rollers_1.txt")
-thread_r = Thread(target=phidgets.runMotorsLoop, args=(1,85,))
+thread_r = Thread(target=phidgets.runMotorsLoop, args=(1,rollerSpeedP4,))
 thread_r.start()
 
 #########################
 # 4 - Start the conveyors
 print "Start the conveyors"
 phidgets.set_csFileName(expPath + "conveyor_1.txt")
-thread_c = Thread(target=phidgets.runConveyors, args=(1,80,2,90))
+thread_c = Thread(target=phidgets.runConveyors, args=(1,belt0P4,2,belt1P4))
 thread_c.start()
 
 
