@@ -15,8 +15,6 @@ import sys
 import phidgetsClass_ext
 import laserClass_ext
 
-#authorize
-import authorizeAndGetParameter
 
 #######################################
 # To manage interruption
