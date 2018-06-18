@@ -7,7 +7,7 @@ import numpy as np
 
 fileName = input("what is the file name?")
 sh = gc.open(fileName)
-template = gc.open("templateTest")
+template = gc.create("templateTest", parent_id = "1YVG4T-0uPaubnIIi0-rMgUItSDt67OOm")
 templateID = template.id
 coverFrTemplateID = template.worksheet_by_by_title('coverSheet')
 coverSheet = sh.add_worksheet('coverSheet', rows=100, cols=10, src_tuple=[template,coverFrTemplateID], index=1)
