@@ -55,6 +55,7 @@ with open('outH_P1.csv',newline='') as f:
 with open('outH_P1.csv','w',newline='') as f:
     w = csv.writer(f)
     w.writerow(['unixTime','posNum', 'posLoc','height','passNum', 'beltNum', 'direction'])
+    w.writerows(data)
 
 with open('InH_P2.csv',newline='') as a:
     r = csv.reader(a)
