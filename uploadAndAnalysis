@@ -20,7 +20,7 @@ for i in np.arange(numPasses):
     baseString = "H_P" +str(i+1)+".csv"
     inString = "in"+baseString
     outString = "out" + baseString
-    inFile = np.append(inFile, instring)
+    inFile = np.append(inFile, inString)
     outFile = np.append(outFile, outString)
     files = np.append(files, inString)
     files = np.append(files, outString)
