@@ -179,6 +179,7 @@ def append_csv_file(file):
 
 for i in np.arange(len(files)):
     append_csv_file(files.item(i))
+    print (i)
 
 #add header and upload force data
 with open('VF.csv',newline='') as f:
@@ -203,6 +204,7 @@ for row in csvReader:
     force = row[forceIndex]
     coordList.append([time, force])
 forceData.append_table(start='A2', end='B2000', values=coordList, dimension='ROWS', overwrite=False)
+
 
 # filtered data sheets
 template = gc.open("templateTest")
