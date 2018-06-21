@@ -1,15 +1,25 @@
+from datetime import datetime
+
 import pygsheets
-gc = pygsheets.authorize()
+gc = pygsheets.authorize("/Users/karissaxu/Msdoughsheeter code/client_secret.json")
 
 import csv
 from datascience import *
 import numpy as np
 
-#create google sheet with coversheet
-fileName = input("what is the file name?")
+#create google sheet with appropriate names
+sponsor = input("what is the sponsor name?")
+flour = input('what is the flour type?')
+time = datetime.now().strftime('%Y-%m-%d-%H-%M')
+fileName = sponsor+ '-'+flour+"-"+time
 sh = gc.create(fileName, parent_id = "1YVG4T-0uPaubnIIi0-rMgUItSDt67OOm")
+
+# copy coverSheet to this new google sheet
 template = gc.open("templateTest")
 templateID = template.id
-coverFrTemplateID = template.worksheet_by_by_title('coverSheet')
-coverSheet = sh.add_worksheet('coverSheet', rows=100, cols=10, src_tuple=[template,coverFrTemplateID], index=1)
+coverFrTemplateID = template.worksheet_by_title('coverSheet').id
+coverSheet = sh.add_worksheet('coverSheet', rows=100, cols=10, src_tuple=[templateID,coverFrTemplateID], index=1)
 print ("fill out cover sheet")
+# delete blank sheet1
+sheet1 = sh.sheet1
+sh.del_worksheet(sheet1)
