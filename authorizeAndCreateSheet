@@ -19,6 +19,7 @@ template = gc.open("templateTest")
 templateID = template.id
 coverFrTemplateID = template.worksheet_by_title('coverSheet').id
 coverSheet = sh.add_worksheet('coverSheet', rows=100, cols=10, src_tuple=[templateID,coverFrTemplateID], index=1)
+coverSheet.update("B5", time)
 print ("fill out cover sheet")
 # delete blank sheet1
 sheet1 = sh.sheet1
