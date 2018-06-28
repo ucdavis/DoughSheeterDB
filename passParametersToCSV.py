@@ -9,7 +9,7 @@ coverSheet = sh.worksheet_by_title('coverSheet')
 with open('parameters.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     #first row - dateAndTime, number of passes
-    writer.writerow([int(coverSheet.cell('B5').value), int(coverSheet.cell('B9').value)])
+    writer.writerow([coverSheet.cell('B5').value, int(coverSheet.cell('B9').value)])
     #every row is parameters for one pass: direction, roller gap, roller speed, belt0speed, belt1speed
     # direction =1, belt1 to belt0; direction = 2, belt0 to belt 1
     passNumber = int(coverSheet.cell('B9').value)
