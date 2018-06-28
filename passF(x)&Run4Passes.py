@@ -69,7 +69,7 @@ phidgets.startModbus()
 ####################
 
 # Create a new main directory to save data
-expDateTime = dateparam[0][0]
+expDateTime = param[0][0]
 expPath = "data/" + expDateTime + "/"
 os.makedirs(expPath)
 
@@ -91,7 +91,7 @@ def runExperiment(listOfParam):
     # 1 - Move the stepper motor (Wait for the motor to reach its final position)
     print "Move the stepper"
     f.write(str(time.time() - start) + ': Change gap\n')
-    phidgets.moveStepper(listOfParam[1])
+    phidgets.moveStepper(float(listOfParam[1]))
     f.write(str(time.time() - start) + ': Gap changed\n')
     # 2 - Start laser
     print "Start lasers"
@@ -141,7 +141,7 @@ def runExperiment(listOfParam):
     phidgets.set_csFileName(expPath + "conveyor_0.txt")
     # Direc 2,1 Movement from 11 to 10. 
     # Arguments are Belt 0, Belt 1
-    thread_c = Thread(target=phidgets.runConveyors, args=(belt0Dir,listOfParam[3],belt1Dir,listOfParam[4]))
+    thread_c = Thread(target=phidgets.runConveyors, args=(belt0Dir,int(listOfParam[3]),belt1Dir,int(listOfParam[4])))
     thread_c.start()
     f.write(str(time.time() - start) + ': Conveyors started\n')
 
