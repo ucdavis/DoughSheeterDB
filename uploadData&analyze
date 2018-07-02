@@ -153,3 +153,6 @@ consolidate = sh.add_worksheet('consolidatedData', rows=2000, cols=8, src_tuple=
 
 analysisID= template.worksheet_by_title('analysis').id
 analysis = sh.add_worksheet('analysis', rows=15000, cols=6, src_tuple=[templateID,analysisID], index=10)
+
+visualizationID = template.worksheet_by_title('visualization').id
+visualization = sh.add_worksheet('visualization', rows=2000, cols=5, src_tuple=[templateID, visualizationID], index=10)
