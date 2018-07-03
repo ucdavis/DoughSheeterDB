@@ -15,7 +15,7 @@ fileName = sponsor+ '-'+flour+"-"+time
 sh = gc.create(fileName, parent_id = "1YVG4T-0uPaubnIIi0-rMgUItSDt67OOm")
 
 # copy coverSheet to this new google sheet
-template = gc.open("templateTest")
+template = gc.open("Dough Sheeter Spreadsheet Templates")
 templateID = template.id
 coverFrTemplateID = template.worksheet_by_title('coverSheet').id
 coverSheet = sh.add_worksheet('coverSheet', rows=100, cols=10, src_tuple=[templateID,coverFrTemplateID], index=1)
