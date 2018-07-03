@@ -136,7 +136,7 @@ for row in csvReader:
 forceData.append_table(start='A2', end='B2000', values=coordList, dimension='ROWS', overwrite=False)
 
 #add data sheets for filtering data, finding averages, and doing analysis
-template = gc.open("templateTest")
+template = gc.open("Dough Sheeter Spreadsheet Templates")
 templateID = template.id
 inHeightID = template.worksheet_by_title('inHeight').id
 inHeight = sh.add_worksheet('inHeight', rows=15000, cols=6, src_tuple=[templateID,inHeightID], index=4)
