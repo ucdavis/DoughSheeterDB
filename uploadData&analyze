@@ -142,6 +142,12 @@ inHeightID = template.worksheet_by_title('inHeight').id
 inHeight = sh.add_worksheet('inHeight', rows=15000, cols=6, src_tuple=[templateID,inHeightID], index=4)
 inHeightAvgID = template.worksheet_by_title('inHeightAvg').id
 inHeight = sh.add_worksheet('inHeightAvg', rows=15000, cols=6, src_tuple=[templateID,inHeightAvgID], index=5)
+
+#sharing to operator and sponsor by email
+operatorEmail = coverSheet.cell('C2').value
+sh.share(operatorEmail)
+sponsorEmail = coverSheet.cell('C4').value
+sh.share(sponsorEmail)
 outHeightID = template.worksheet_by_title('outHeight').id
 outHeight = sh.add_worksheet('outHeight', rows=15000, cols=6, src_tuple=[templateID,outHeightID], index=6)
 outHeightAvgID = template.worksheet_by_title('outHeightAvg').id
