@@ -1,4 +1,4 @@
-# read from csv
+#read from csv
 import csv
 
 # reading from parameter.csv by passing the table to a 2D list
@@ -26,7 +26,6 @@ import sys
 # Import the wrapped API
 import phidgetsClass_ext
 import laserClass_ext
-
 
 #######################################
 # To manage interruption
@@ -84,20 +83,41 @@ start = time.time()
 
 # for running one pass
 def runExperiment(listOfParam):
-    # 0 - Init the stepper motor
-    f.write(str(time.time() - start) + ': Initialization of the stepper motor\n')
-    phidgets.initStepper()
-    f.write(str(time.time() - start) + ': End of initialization of the stepper motor\n')
-    # 1 - Move the stepper motor (Wait for the motor to reach its final position)
-    print "Move the stepper"
-    f.write(str(time.time() - start) + ': Change gap\n')
-    phidgets.moveStepper(float(listOfParam[1]))
-    f.write(str(time.time() - start) + ': Gap changed\n')
+    # for first pass, the stepper should be initialized
+    passNumber = listOfParam[0]
+    if passNumber =='1':
+        # 0 - Init the stepper motor
+        f.write(str(time.time() - start) + ': Initialization of the stepper motor\n')
+        phidgets.initStepper()
+        f.write(str(time.time() - start) + ': End of initialization of the stepper motor\n')
+        # 1 - Move the stepper motor (Wait for the motor to reach its final position)
+        print "Move the stepper"
+        f.write(str(time.time() - start) + ': Change gap\n')
+        phidgets.moveStepper(float(listOfParam[2]))
+        f.write(str(time.time() - start) + ': Gap changed\n')
+    else:
+        # 1 - Move the stepper motor (Wait for the motor to reach its fianl position)
+        print "Move the stepper"
+        phidgets.moveStepper(float(listOfParam[2]))
+
     # 2 - Start laser
+    direction = int(listOfParam[1])
+    if direction == 1:
+        rollerDir= -1
+        belt0Dir = 2
+        belt1Dir = 1
+    else: 
+        rollerDir= 1
+        belt0Dir = 1
+        belt1Dir = 2
     print "Start lasers"
     # Setup the filename to save the current data
-    laser0.set_fileName(expPath + "outH_P1.csv")
-    laser1.set_fileName(expPath + "inH_P1.csv")
+    if direction ==1:
+        laser0.set_fileName(expPath + "outH_P" + passNumber + ".csv")
+        laser1.set_fileName(expPath + "inH_P"+passNumber+".csv")
+    else:
+        laser0.set_fileName(expPath + "inH_P" + passNumber + ".csv")
+        laser1.set_fileName(expPath + "outH_P" + passNumber + ".csv")
     # Setup the parameters to save the data
     laser0.set_save()
     laser1.set_save()
@@ -108,73 +128,100 @@ def runExperiment(listOfParam):
     thread_l0.start()
     thread_l1.start()
     
-    direction = listOfParam[0]
-    # direction is 1, belt1 in and belt0 out
-    # otherwise, direction is 2, belt1 out and belt0 in
-    if direction == 1:
-        rollerDir= -1
-        belt0Dir = 2
-        belt1Dir = 1
-    else: 
-        rollerDir= 1
-        belt0Dir = 1
-        belt1Dir = 2
+   
+    
     ####################
-    # 2.1 - Start load cells
-    phidgets.set_lcFileName(expPath + "VF.csv")
+    # load cell only need to be started for the first pass(according to Adrien's code)
+    if passNumber =='1':
+        # 2.1 - Start load cells
+        phidgets.set_lcFileName(expPath + "VF.csv")
 
-    thread_lc = Thread(target=phidgets.loadCells, args=())
-    thread_lc.start()
+        thread_lc = Thread(target=phidgets.loadCells, args=())
+        thread_lc.start()
 
     #######################
     # 3 - Start the rollers
     print "Start the rollers"
-    phidgets.set_rsFileName(expPath + "rollers_0.txt")
-    #Movement in direction of Belt 11 to Belt 10
-    thread_r = Thread(target=phidgets.runMotorsLoop, args=(rollerDir,listOfParam[2],))
-    thread_r.start()
-    f.write(str(time.time() - start) + ': Rollers started\n')
+    if passNumber =='1':
+        phidgets.set_rsFileName(expPath + "rollers_0.txt")
+        thread_r = Thread(target=phidgets.runMotorsLoop, args=(rollerDir,float(listOfParam[3]),))
+        thread_r.start()
+        f.write(str(time.time() - start) + ': Rollers started\n')
+    else:
+        phidgets.set_rsFileName(expPath + "rollers_1.txt")
+        thread_r = Thread(target=phidgets.runMotorsLoop, args=(rollerDir,float(listOfParam[3]),))
+        thread_r.start()
 
     #########################
     # 4 - Start the conveyors 
     print "Start the conveyors"
-    phidgets.set_csFileName(expPath + "conveyor_0.txt")
-    # Direc 2,1 Movement from 11 to 10. 
-    # Arguments are Belt 0, Belt 1
-    thread_c = Thread(target=phidgets.runConveyors, args=(belt0Dir,int(listOfParam[3]),belt1Dir,int(listOfParam[4])))
-    thread_c.start()
-    f.write(str(time.time() - start) + ': Conveyors started\n')
+    if passNumber =='1':
+        phidgets.set_csFileName(expPath + "conveyor_0.txt")
+        thread_c = Thread(target=phidgets.runConveyors, args=(belt0Dir,int(listOfParam[4]),belt1Dir,int(listOfParam[5])))
+        thread_c.start()
+        f.write(str(time.time() - start) + ': Conveyors started\n')
 
+    else:
+        phidgets.set_csFileName(expPath + "conveyor_1.txt")
+        thread_c = Thread(target=phidgets.runConveyors, args=(belt0Dir,int(listOfParam[4]),belt1Dir,int(listOfParam[5])))
+        thread_c.start()
     #########################
     # WAIT !!!!!!!!!!!
     # Data acquisition
     # Laser 0 is the output and stops automatically
     while laser0.get_acquisition() == True:
         dumb = 1
-    print "End of acquisition 1"
+    print "End of acquisition " + passNumber
     # Laser is input and has to be stopped in the code
-    laser1.stopAcquisition()
+    if direction == 1:
+        while laser0.get_acquisition() == True:
+            dumb = 1
+        print "End of acquisition " + passNumber
+        laser1.stopAcquisition()
+        if laser0.get_error() > 0:
+            phidgets.cleanConnection()
+            phidgets.stopLoadCells()
+            phidgets.stopMotorsLoop()
+            phidgets.stopConveyors()
+            phidgets.stopStepper()
+            sys.exit(0)
+        if laser1.get_error() > 0:
+            phidgets.cleanConnection()
+            phidgets.stopLoadCells()
+            phidgets.stopMotorsLoop()
+            phidgets.stopConveyors()
+            phidgets.stopStepper()
+            sys.exit(0)
+    if direction == 2:
+        while laser1.get_acquisition() == True:
+	    dumb = 1
+        print "End of acquisition " + passNumber
+        laser0.stopAcquisition()
 
-    if laser0.get_error() > 0:
-        phidgets.cleanConnection()
-        phidgets.stopLoadCells()
-        phidgets.stopMotorsLoop()
-        phidgets.stopConveyors()
-        phidgets.stopStepper()
-        sys.exit(0)
-    if laser1.get_error() > 0:
-        phidgets.cleanConnection()
-        phidgets.stopLoadCells()
-        phidgets.stopMotorsLoop()
-        phidgets.stopConveyors()
-        phidgets.stopStepper()
-        sys.exit(0)
+        if laser0.get_error() > 0:
+            phidgets.cleanConnection()
+            phidgets.stopLoadCells()
+            phidgets.stopMotorsLoop()
+            phidgets.stopConveyors()
+            phidgets.stopStepper()
+            sys.exit(0)
+        if laser1.get_error() > 0:
+            phidgets.cleanConnection()
+            phidgets.stopLoadCells()
+            phidgets.stopMotorsLoop()
+            phidgets.stopConveyors()
+            phidgets.stopStepper()
+            sys.exit(0)
 
     #########################
     # 5 - Stop the conveyors
     print "Stop conveyors"
-    phidgets.stopConveyors()
-    f.write(str(time.time() - start) + ': Conveyors stopped\n')
+    if passNumber =='1':
+        phidgets.stopConveyors()
+        f.write(str(time.time() - start) + ': Conveyors stopped\n')
+    else:
+        print "Stop conveyors"
+        phidgets.stopConveyors()
 
     #########################
     # 6 - Stop load cells
@@ -194,6 +241,12 @@ def runExperiment(listOfParam):
 
 
 # run all the passes by calling runExperiment function
-passNum =dateparam[0][1] 
-for i in np.arange(passNum):
-    runExperiment(dataparam[i+1])
+passNum =int(param[0][1])
+i=1
+for i in range(1,passNum):
+    runExperiment(param[i])
+
+f.close()
+
+
+
