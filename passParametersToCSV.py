@@ -1,8 +1,10 @@
 import csv
 import pygsheets
-gc = pygsheets.authorize("/Users/karissaxu/Msdoughsheeter code/client_secret.json")
-
-filename = input("what is the file name of the google sheet")
+gc = pygsheets.authorize("client_secret.json")
+sponsor = input("what is the sponsor name?")
+flour = input('what is the flour type?')
+time = input('when did the experiment start? %Y-%m-%d-%H-%M')
+fileName = sponsor+ '-'+flour+"-"+time
 sh = gc.open(filename)
 coverSheet = sh.worksheet_by_title('coverSheet')
 
