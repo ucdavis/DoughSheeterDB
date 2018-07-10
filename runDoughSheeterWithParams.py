@@ -1,14 +1,3 @@
-#read from csv
-import csv
-
-# reading from parameter.csv by passing the table to a 2D list
-with open('parameters.csv','r') as csv_file:
-    csv_reader = csv.reader(csv_file)
-    #para = list(csv_reader)
-    #para[0]
-    #print(para[0])
-    param = [row for row in csv_reader]
-    print (param)
 
 # Give the path to find the python wrapper
 import sys
@@ -27,61 +16,14 @@ import sys
 import phidgetsClass_ext
 import laserClass_ext
 
-#######################################
-# To manage interruption
-#######################################
-def signal_handler(signal, frame):
-        print('Stop the system!')
-        phidgets.stopLoadCells()
-        phidgets.stopMotorsLoop()
-        phidgets.stopConveyors()
-        phidgets.stopStepper()
-        laser0.stopAcquisition()
-        laser1.stopAcquisition()
-        sys.exit(0)
-signal.signal(signal.SIGINT, signal_handler)
+#read from csv
+import csv
 
-#######################################
-# Create the lasers and phidgets objects
-#######################################
+######################################################################################################
+# FUNCTIONS
+######################################################################################################
 
-# Create the laser object
-laser0=laserClass_ext.laserClass(0)
-laser1=laserClass_ext.laserClass(1)
-
-# Create the phidget object
-phidgets=phidgetsClass_ext.phidgetsClass()
-results = phidgets.initConnection()
-if results > 0:
-    phidgets.cleanConnection()
-    sys.exit(0)
-
-############################
-# Start Modbus communication
-############################
-
-phidgets.startModbus()
-
-
-####################
-# Log data
-####################
-
-# Create a new main directory to save data
-expDateTime = param[0][0]
-expPath = "data/" + expDateTime + "/"
-os.makedirs(expPath)
-
-# Log file
-logPath = "data/" + expDateTime + "/log.txt"
-f = open(logPath, 'w')
-f.write('Log file: ' + expDateTime + '\n')
-
-# Start the timestamp
-start = time.time()
-
-
-# for running one pass
+# To run each pass - read experiment parameters from cover sheet.
 def runExperiment(listOfParam):
     # for first pass, the stepper should be initialized
     passNumber = listOfParam[0]
@@ -98,9 +40,9 @@ def runExperiment(listOfParam):
     else:
         # 1 - Move the stepper motor (Wait for the motor to reach its fianl position)
         print "Move the stepper"
-	f.write(str(time.time() - start) + ': Change gap\n')
-	phidgets.moveStepper(float(listOfParam[2]))
-	f.write(str(time.time() - start) + ': Gap changed\n')
+        f.write(str(time.time() - start) + ': Change gap\n')
+        phidgets.moveStepper(float(listOfParam[2]))
+        f.write(str(time.time() - start) + ': Gap changed\n')
 
     # 2 - Start laser
     direction = int(listOfParam[1])
@@ -131,7 +73,6 @@ def runExperiment(listOfParam):
     thread_l1.start()
     
    
-    
     ####################
     # load cell only need to be started for the first pass(according to Adrien's code)
     if passNumber =='1':
@@ -144,19 +85,31 @@ def runExperiment(listOfParam):
     #######################
     # 3 - Start the rollers
     print "Start the rollers"
-    phidgets.set_rsFileName(expPath + "rollers_0.txt")
-    thread_r = Thread(target=phidgets.runMotorsLoop, args=(rollerDir,float(listOfParam[3]),))
-    thread_r.start()
-    f.write(str(time.time() - start) + ': Rollers started\n')
-   
+    if passNumber =='1':
+        phidgets.set_rsFileName(expPath + "rollers_0.txt")
+        thread_r = Thread(target=phidgets.runMotorsLoop, args=(rollerDir,float(listOfParam[3]),))
+        thread_r.start()
+        f.write(str(time.time() - start) + ': Rollers started\n')
+    else:
+        phidgets.set_rsFileName(expPath + "rollers_1.txt")
+        thread_r = Thread(target=phidgets.runMotorsLoop, args=(rollerDir,float(listOfParam[3]),))
+        thread_r.start()
+        f.write(str(time.time() - start) + ': Rollers started\n')
+
     #########################
     # 4 - Start the conveyors 
     print "Start the conveyors"
-    phidgets.set_csFileName(expPath + "conveyor_0.txt")
-    thread_c = Thread(target=phidgets.runConveyors, args=(belt0Dir,int(listOfParam[4]),belt1Dir,int(listOfParam[5])))
-    thread_c.start()
-    f.write(str(time.time() - start) + ': Conveyors started\n')
+    if passNumber =='1':
+        phidgets.set_csFileName(expPath + "conveyor_0.txt")
+        thread_c = Thread(target=phidgets.runConveyors, args=(belt0Dir,int(listOfParam[4]),belt1Dir,int(listOfParam[5])))
+        thread_c.start()
+        f.write(str(time.time() - start) + ': Conveyors started\n')
 
+    else:
+        phidgets.set_csFileName(expPath + "conveyor_1.txt")
+        thread_c = Thread(target=phidgets.runConveyors, args=(belt0Dir,int(listOfParam[4]),belt1Dir,int(listOfParam[5])))
+        thread_c.start()
+        f.write(str(time.time() - start) + ': Conveyors started\n')
     #########################
     # WAIT !!!!!!!!!!!
     # Data acquisition
@@ -211,6 +164,7 @@ def runExperiment(listOfParam):
     phidgets.stopConveyors()
     f.write(str(time.time() - start) + ': Conveyors stopped\n')
 
+
     #########################
     # 6 - Stop load cells
     #phidgets.stopLoadCells()
@@ -228,13 +182,92 @@ def runExperiment(listOfParam):
     #########################
 
 
+
+#######################################
+# To manage interruption
+#######################################
+def signal_handler(signal, frame):
+        print('Stop the system!')
+        phidgets.stopLoadCells()
+        phidgets.stopMotorsLoop()
+        phidgets.stopConveyors()
+        phidgets.stopStepper()
+        laser0.stopAcquisition()
+        laser1.stopAcquisition()
+        sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
+
+
+
+
+#######################################
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# MAIN CODE
+#######################################
+
+
+
+# reading from parameter.csv by passing the table to a 2D list
+with open('parameters.csv','r') as csv_file:
+    csv_reader = csv.reader(csv_file)
+    #para = list(csv_reader)
+    #para[0]
+    #print(para[0])
+    param = [row for row in csv_reader]
+    print (param)
+
+
+
+#######################################
+# Create the lasers and phidgets objects
+#######################################
+
+# Create the laser object
+laser0=laserClass_ext.laserClass(0)
+laser1=laserClass_ext.laserClass(1)
+
+# Create the phidget object
+phidgets=phidgetsClass_ext.phidgetsClass()
+results = phidgets.initConnection()
+if results > 0:
+    phidgets.cleanConnection()
+    sys.exit(0)
+
+############################
+# Start Modbus communication
+############################
+
+phidgets.startModbus()
+
+
+####################
+# Log data
+####################
+
+# Create a new main directory to save data
+expDateTime = param[0][0]
+expPath = "data/" + expDateTime + "/"
+os.makedirs(expPath)
+
+# Log file
+logPath = "data/" + expDateTime + "/log.txt"
+f = open(logPath, 'w')
+f.write('Log file: ' + expDateTime + '\n')
+
+# Start the timestamp
+start = time.time()
+
+
 # run all the passes by calling runExperiment function
 passNum =int(param[0][1])
 i=1
-for i in range(1,passNum):
+for i in range(1,passNum+1):
     runExperiment(param[i])
+    print ("completed pass " + str(i))
+    if i== passNum:
+	print ("stop the for loop")
+        break
 
+# closing open functions
 f.close()
 phidgets.stopLoadCells()
-
-
