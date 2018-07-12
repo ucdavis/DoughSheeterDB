@@ -4,6 +4,7 @@ gc = pygsheets.authorize("client_secret.json")
 import csv
 from datascience import *
 import numpy as np
+import webbrowser
 
 sponsor = input("what is the sponsor name?")
 flour = input('what is the flour type?')
@@ -162,3 +163,7 @@ analysis = sh.add_worksheet('analysis', rows=15000, cols=6, src_tuple=[templateI
 
 visualizationID = template.worksheet_by_title('visualization').id
 visualization = sh.add_worksheet('visualization', rows=2000, cols=5, src_tuple=[templateID, visualizationID], index=10)
+
+#open visualization in webbrowser
+shID = sh.id
+webbrowser.open('https://docs.google.com/spreadsheets/d/'+shID +'/edit#gid='+str(visualizationID)) 
