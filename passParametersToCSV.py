@@ -8,6 +8,7 @@ fileName = sponsor+ '-'+flour+"-"+time
 sh = gc.open(filename)
 coverSheet = sh.worksheet_by_title('coverSheet')
 
+# write parameters to csv files
 with open('parameters.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     #first row - dateAndTime, number of passes
@@ -20,3 +21,13 @@ with open('parameters.csv', 'w', newline='') as f:
         parameter += [int(coverSheet.cell('J'+str(i+2)).value), int(coverSheet.cell('G'+str(i+2)).value)]
         parameter += [int(coverSheet.cell('E'+str(i+2)).value)]
         writer.writerow(parameter)
+# write entry to master experiment list
+shID = sh.id
+master = gc.open("Experiment master list")
+masterID = master.id
+coverSheet = sh.worksheet_by_title('coverSheet')
+passNumber = int(coverSheet.cell('B9').value)
+
+experimentRow = [sponsor, time, flour, passNumber, ('https://docs.google.com/spreadsheets/d/'+shID)]
+expSh = master.worksheet_by_title("Experiment")
+expSh.append_table(start='A21', end='G70000', values=experimentRow, dimension='ROWS', overwrite=False)
