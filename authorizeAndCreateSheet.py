@@ -12,7 +12,12 @@ sponsor = input("what is the sponsor name?")
 flour = input('what is the flour type?')
 time = datetime.now().strftime('%Y-%m-%d-%H-%M')
 fileName = sponsor+ '-'+flour+"-"+time
-sh = gc.create(fileName, parent_id = "1YVG4T-0uPaubnIIi0-rMgUItSDt67OOm")
+# store file in appropriate sponsor's folder
+if sponsor == "Ardent":
+    parent = "1cMT_LlBnU2BDa0T0Fti6uVoewEHV3ll-"
+else: 
+    parent = "1YVG4T-0uPaubnIIi0-rMgUItSDt67OOm"
+sh = gc.create(fileName, parent_id = parent)
 
 # copy coverSheet to this new google sheet
 template = gc.open("Dough Sheeter Spreadsheet Templates")
