@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pygsheets
-gc = pygsheets.authorize("/Users/karissaxu/Msdoughsheeter code/client_secret.json")
+gc = pygsheets.authorize("client_secret.json")
 
 import csv
 from datascience import *
