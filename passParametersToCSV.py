@@ -33,5 +33,6 @@ experimentRow = [sponsor, time, flour, passNumber, ('https://docs.google.com/spr
 expSh = master.worksheet_by_title("Experiment")
 expSh.append_table(start='A21', end='G70000', values=experimentRow, dimension='ROWS', overwrite=False)
 sponsorExperimentSheet = sponsorSh.worksheet_by_title("Experiment")
-sponsorExperimentSheet.append_table(start='A21', end='G70000', values=experimentRow, dimension='ROWS', overwrite=False)
+sponsorExpRow = [time, flour, passNumber, ('https://docs.google.com/spreadsheets/d/'+shID)]
+sponsorExperimentSheet.append_table(start='A21', end='G70000', values=sponsorExpRow, dimension='ROWS', overwrite=False)
 
