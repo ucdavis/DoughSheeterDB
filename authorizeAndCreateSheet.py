@@ -26,7 +26,7 @@ coverSheet = sh.add_worksheet('coverSheet', rows=100, cols=10, src_tuple=[templa
 coverSheet.update_cell("B5", time)
 #copy parameter choices
 paraChID = template.worksheet_by_title('parameter choices').id
-sh.add_worksheet('coverSheet', rows=100, cols=10, src_tuple=[templateID,paraChID], index=2)
+sh.add_worksheet('parameter choices', rows=100, cols=10, src_tuple=[templateID,paraChID], index=2)
 print ("fill out cover sheet")
 # delete blank sheet1
 sheet1 = sh.sheet1
