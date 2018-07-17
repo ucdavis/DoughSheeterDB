@@ -3,7 +3,7 @@ import pygsheets
 import csv
 from datascience import *
 import numpy as np
-import webbroswer
+import webbrowser
 gc = pygsheets.authorize("client_secret.json")
 
 #create google sheet with appropriate names
