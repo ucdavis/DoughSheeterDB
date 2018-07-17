@@ -167,3 +167,8 @@ visualization = sh.add_worksheet('visualization', rows=2000, cols=5, src_tuple=[
 #open visualization in webbrowser
 shID = sh.id
 webbrowser.open('https://docs.google.com/spreadsheets/d/'+shID +'/edit#gid='+str(visualizationID)) 
+#sharing to operator and sponsor by email
+operatorEmail = coverSheet.cell('C2').value
+sh.share(operatorEmail)
+sponsorEmail = coverSheet.cell('C4').value
+sh.share(sponsorEmail)
