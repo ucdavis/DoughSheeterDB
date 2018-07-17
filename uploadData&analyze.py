@@ -144,25 +144,35 @@ inHeight = sh.add_worksheet('inHeight', rows=15000, cols=6, src_tuple=[templateI
 inHeightAvgID = template.worksheet_by_title('inHeightAvg').id
 inHeight = sh.add_worksheet('inHeightAvg', rows=15000, cols=6, src_tuple=[templateID,inHeightAvgID], index=5)
 
-#sharing to operator and sponsor by email
-operatorEmail = coverSheet.cell('C2').value
-sh.share(operatorEmail)
-sponsorEmail = coverSheet.cell('C4').value
-sh.share(sponsorEmail)
+#add data sheets for filtering data, finding averages, and doing analysis
+template = gc.open("Dough Sheeter Spreadsheet Templates")
+templateID = template.id
+inHeightID = template.worksheet_by_title('inHeight').id
+inHeight = sh.add_worksheet('inHeight', rows=15000, cols=6, src_tuple=[templateID,inHeightID], index=4)
+inHeightAvgID = template.worksheet_by_title('inHeightAvg').id
+inHeight = sh.add_worksheet('inHeightAvg', rows=15000, cols=6, src_tuple=[templateID,inHeightAvgID], index=5)
+print ("inHeight done")
 outHeightID = template.worksheet_by_title('outHeight').id
 outHeight = sh.add_worksheet('outHeight', rows=15000, cols=6, src_tuple=[templateID,outHeightID], index=6)
 outHeightAvgID = template.worksheet_by_title('outHeightAvg').id
 outHeightAvg = sh.add_worksheet('outHeightAvg', rows=15000, cols=6, src_tuple=[templateID,outHeightAvgID], index=7)
+print ("outHeight done")
 vFID = template.worksheet_by_title('VF').id
 forceData = sh.add_worksheet('VF', rows=2000, cols=2, src_tuple=[templateID,vFID], index=8)
+print("force done")
 consolidateID = template.worksheet_by_title('consolidatedData').id
 consolidate = sh.add_worksheet('consolidatedData', rows=2000, cols=8, src_tuple=[templateID,consolidateID], index=9)
 
 analysisID= template.worksheet_by_title('analysis').id
 analysis = sh.add_worksheet('analysis', rows=15000, cols=6, src_tuple=[templateID,analysisID], index=10)
-
-visualizationID = template.worksheet_by_title('visualization').id
-visualization = sh.add_worksheet('visualization', rows=2000, cols=5, src_tuple=[templateID, visualizationID], index=10)
+print("analysis done" )
+visualizationFrTempID = template.worksheet_by_title('visualization').id
+visualization = sh.add_worksheet('visualization', rows=2000, cols=5, src_tuple=[templateID, visualizationFrTempID], index=10)
+visualID = sh.worksheet_by_title('visualization').id
+print ("visualization done" )
+#open visualization in webbrowser
+shID = sh.id
+webbrowser.open('https://docs.google.com/spreadsheets/d/'+shID +'/edit#gid='+str(visualID)) )
 
 #open visualization in webbrowser
 shID = sh.id
