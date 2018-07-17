@@ -1,11 +1,10 @@
 from datetime import datetime
-
 import pygsheets
-gc = pygsheets.authorize("client_secret.json")
-
 import csv
 from datascience import *
 import numpy as np
+import webbroswer
+gc = pygsheets.authorize("client_secret.json")
 
 #create google sheet with appropriate names
 sponsor = input("what is the sponsor name?")
@@ -29,3 +28,6 @@ print ("fill out cover sheet")
 # delete blank sheet1
 sheet1 = sh.sheet1
 sh.del_worksheet(sheet1)
+# open coverSheet
+shID = sh.id
+webbrowser.open('https://docs.google.com/spreadsheets/d/'+shID) 
