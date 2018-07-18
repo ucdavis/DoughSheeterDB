@@ -6,8 +6,20 @@ from datascience import *
 import numpy as np
 import webbrowser
 
-sponsor = input("what is the sponsor name?")
-flour = input('what is the flour type?')
+#access google workbook
+sponsorType = input("what is the sponsor name? enter 1 if Ardent")
+if sponsorType = "1":
+    sponsor = "Ardent"
+else:
+    sponsor = sponsorType
+flourType = input('what is the flour type? enter 1 for allPurpose; 2 for breadFlour ')
+if flourType = "1":
+    flour = "allPurpose"
+else if flourType = "2":
+    flour = "breadFlour"
+else:
+    flour = flourType
+
 time = input("when did you run")
 fileName = sponsor+ '-'+flour+"-"+time
 sh = gc.open(fileName)
