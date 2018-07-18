@@ -8,15 +8,15 @@ gc = pygsheets.authorize("client_secret.json")
 
 #create google sheet with appropriate names
 sponsorType = input("what is the sponsor name? enter 1 if Ardent")
-if sponsorType = "1":
+if sponsorType == "1":
 	sponsor = "Ardent"
 else:
 	sponsor = sponsorType
 
 flourType = input('what is the flour type? enter 1 for allPurpose; 2 for breadFlour ')
-if flourType = "1":
+if flourType == "1":
 	flour = "allPurpose"
-else if flourType = "2":
+else if flourType == "2":
 	flour = "breadFlour"
 else:
 	flour = flourType
