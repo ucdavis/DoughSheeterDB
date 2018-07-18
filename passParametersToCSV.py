@@ -1,8 +1,21 @@
 import csv
 import pygsheets
 gc = pygsheets.authorize("client_secret.json")
-sponsor = input("what is the sponsor name?")
-flour = input('what is the flour type?')
+
+sponsorType = input("what is the sponsor name? enter 1 if Ardent")
+if sponsorType = "1":
+	sponsor = "Ardent"
+else:
+	sponsor = sponsorType
+
+flourType = input('what is the flour type? enter 1 for allPurpose; 2 for breadFlour ')
+if flourType = "1":
+	flour = "allPurpose"
+else if flourType = "2":
+	flour = "breadFlour"
+else:
+	flour = flourType
+
 time = input('when did the experiment start? %Y-%m-%d-%H-%M')
 fileName = sponsor+ '-'+flour+"-"+time
 sh = gc.open(filename)
