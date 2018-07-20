@@ -4,7 +4,7 @@ import sys
 sys.path.append('phidgetsClass/')
 sys.path.append('laserClass/')
 
-# Import modules
+# Import library modules
 from threading import Thread
 from datetime import datetime
 import time
@@ -23,9 +23,10 @@ import csv
 # FUNCTIONS
 ######################################################################################################
 
-# To run each pass - read experiment parameters from cover sheet.
+# To run each pass - read experiment parameters from parameter.csv, 
+#which reads from the coverSheet of the experiment workbook
 def runExperiment(listOfParam):
-    # for first pass, the stepper should be initialized
+    # for the first pass, the stepper should be initialized by running phidgets.initStepper()
     passNumber = listOfParam[0]
     if passNumber =='1':
         # 0 - Init the stepper motor
@@ -113,15 +114,17 @@ def runExperiment(listOfParam):
     #########################
     # WAIT !!!!!!!!!!!
     # Data acquisition
-    # Laser 0 is the output and stops automatically
+    
     while laser0.get_acquisition() == True:
         dumb = 1
     print "End of acquisition " + passNumber
-    # Laser is input and has to be stopped in the code
+    
     if direction == 1:
+	# Laser 0 is the output and stops automatically
         while laser0.get_acquisition() == True:
             dumb = 1
         print "End of acquisition " + passNumber
+	# Laser 1 is input and has to be stopped in the code
         laser1.stopAcquisition()
         if laser0.get_error() > 0:
             phidgets.cleanConnection()
@@ -138,10 +141,12 @@ def runExperiment(listOfParam):
             phidgets.stopStepper()
             sys.exit(0)
     if direction == 2:
+	# Laser 1 is the output and stops automatically
         while laser1.get_acquisition() == True:
 	    dumb = 1
         print "End of acquisition " + passNumber
         laser0.stopAcquisition()
+	# Laser 0 is input and has to be stopped in the code
 
         if laser0.get_error() > 0:
             phidgets.cleanConnection()
