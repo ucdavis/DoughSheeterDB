@@ -1,12 +1,23 @@
 from datetime import datetime
+# Library to access/edit/save googlesheets
 import pygsheets
+# Libary to edit csv data
 import csv
+#Libraries for handling datastructures - array, list
 from datascience import *
 import numpy as np
+#Library to open url links in code
 import webbrowser
+
+# This code performs following tasks:
+# Connects to google drive
+# Creates a new google sheet for the experiment(s) 
+# and writes data to it.
+
+# Creating a connection to the drive , Authorization function takes the key file as parameter.
 gc = pygsheets.authorize("client_secret.json")
 
-#create google sheet with appropriate names
+#Query User for experiment meta-data : Sponsor Name and Flour type. Time of experiment is System time.
 sponsorType = input("what is the sponsor name? enter 1 if Ardent")
 if sponsorType == "1":
 	sponsor = "Ardent"
@@ -22,15 +33,23 @@ else:
 	flour = flourType
 
 time = datetime.now().strftime('%Y-%m-%d-%H-%M')
+
+#Concatenate meta-data(sponsor+flour+time) to create file name of google sheet 
+# to which experiment data will be stored.
 fileName = sponsor+ '-'+flour+"-"+time
-# store file in corresponding sponsor's folder 
+
+#Store newly created file in folder specific to the Sponsor 
+#Any new sponsors should be added here
+#Each folder is identified by folder address, which is found in the the googledrive hyperlink. 
 if sponsor == "Ardent":
     parent = "1cMT_LlBnU2BDa0T0Fti6uVoewEHV3ll-"
 else: 
     parent = "1YVG4T-0uPaubnIIi0-rMgUItSDt67OOm"
 sh = gc.create(fileName, parent_id = parent)
 
-# copy coverSheet to this new google sheet
+
+# Access Template Spreadsheet to copy to new google sheet - "Cover Sheet" and "Parameter choices"
+# These are standard sheets for every experiment and contain data about experimental settings and materials
 template = gc.open("Dough Sheeter Spreadsheet Templates")
 templateID = template.id
 coverFrTemplateID = template.worksheet_by_title('coverSheet').id
