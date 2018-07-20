@@ -23,7 +23,7 @@ else:
 
 time = datetime.now().strftime('%Y-%m-%d-%H-%M')
 fileName = sponsor+ '-'+flour+"-"+time
-# store file in appropriate sponsor's folder
+# store file in corresponding sponsor's folder 
 if sponsor == "Ardent":
     parent = "1cMT_LlBnU2BDa0T0Fti6uVoewEHV3ll-"
 else: 
