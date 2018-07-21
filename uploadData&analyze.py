@@ -13,7 +13,7 @@ gc = pygsheets.authorize("client_secret.json")
 
 #Query User for experiment meta-data : Sponsor Name and Flour type. Time of experiment is the time User started the experiment
 #concatenate the meta-data and form title for the experiment workbook
-#access google workbook with the experiment title
+#access existing google workbook with the experiment title
 sponsorType = input("what is the sponsor name? enter 1 if Ardent")
 if sponsorType == "1":
     sponsor = "Ardent"
@@ -32,9 +32,10 @@ fileName = sponsor+ '-'+flour+"-"+time
 sh = gc.open(fileName)
 coverSheet = sh.worksheet_by_title("coverSheet")
 
-# add raw data sheet to the experiment workbook
+# add empty raw data sheet to the experiment workbook
 rawData = sh.add_worksheet('rawData', rows=24000, cols = 7, index =2)
 
+#filling out raw data sheet 
 #add header to the rawData sheet
 rawData.cell('A1').value = 'unixTime'
 rawData.cell('B1').value = 'posNum'
@@ -45,11 +46,12 @@ rawData.cell('F1').value = 'beltNum'
 rawData.cell('G1').value = 'direction'
 
 #read the number of passes from coverSheet
+numPasses = int(coverSheet.cell("B9").value)
+
 #write an array of file names that will later be used to access raw data files
 #inFile is the array of inHeight data files
 #outFile is the array of outHeight data files
 #files include both inFile and outFile
-numPasses = int(coverSheet.cell("B9").value)
 files = make_array()
 inFile = make_array()
 outFile = make_array()
