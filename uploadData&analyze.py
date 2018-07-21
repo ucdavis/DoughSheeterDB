@@ -73,6 +73,7 @@ path = "data/"+input("when did you start the experiment? yyyy-mm-dd-hh-mm")
 #For index "a", pass number will be "a+1" since np.arange(a) starts with 0, 1, 2, a-1
 #pass number is a+1; for an even "a" value, belt number is 1 since the machine always start at the belt1 side
 
+print ("Modifying raw data files for analysis and processing; adding passNum, beltNum, direction")
 for a in np.arange(len(inFile)):
     with open(path+"/"+inFile.item(a), newline='') as f:
         r = csv.reader(f)
@@ -150,7 +151,8 @@ def append_csv_file(file):
         coordList.append([time, posNum,posLoc,height, passNum, beltNum, direction])
     #append_table() append the coordList, which is the csv file on rawData sheet without overwriting any rows
     rawData.append_table(start='A2', end='G70000', values=coordList, dimension='ROWS', overwrite=False)
-    
+
+print ("Uploading data files to google sheet")    
 # append all csv file in the "files" array by using a for loop
 for i in np.arange(len(files)):
     append_csv_file(path+"/"+files.item(i))
