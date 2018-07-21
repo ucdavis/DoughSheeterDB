@@ -5,6 +5,10 @@ import pygsheets
 #Link to google api and allow access/create/edit google sheet
 gc = pygsheets.authorize("client_secret.json")
 
+#This code reads experiments parameters from google sheets and  
+# saves to csv for easier passing of variables to runDoughSheeterWithParams.py 
+
+
 # Experiment enter meta-data (sponsor name, flour type, the time the experiment starts)
 # all meta-data is the concatenated and become the title of the google workbook for the experiment
 sponsorType = input("what is the sponsor name? enter 1 if Ardent")
@@ -23,13 +27,13 @@ else:
 time = input('when did the experiment start? %Y-%m-%d-%H-%M')
 fileName = sponsor+ '-'+flour+"-"+time
 
-# open google workbook by its title
+# open google workbook (created above) by its title and get handle
 sh = gc.open(filename)
-# access coverSheet in the workbook by calling its name
+# use handle to access coverSheet in the workbook 
 coverSheet = sh.worksheet_by_title('coverSheet')
 
 # create a new csv file
-# write the experiment parameters(pass number, speed, gap) to csv files
+# write the experiment parameters(pass number, speed, gap) from google cover sheet to local(to ubuntu box) csv file
 
 with open('parameters.csv', 'w', newline='') as f:
     writer = csv.writer(f)
@@ -45,9 +49,10 @@ with open('parameters.csv', 'w', newline='') as f:
         parameter += [int(coverSheet.cell('E'+str(i+2)).value)]
         writer.writerow(parameter)
 
-# document the experiment workbook address and its meta-data into two "experiment list" sheets for future references
-# access the two experiment list sheet("Experiment master list" and sponsor "experiment list")
-# get the workbook id and sotre the pass number of the experiment
+# Record address for this experiment workbook and its meta-data, to 2 Master lists sheets 
+# Experiment Master List - Has record of all experiments performed, Sponsor Experiment List - Subset of Master specific to sponsor
+# Access the two experiment list sheet("Experiment master list" and sponsor "experiment list")
+# Get the workbook id and read&save the pass number of the experiment
 shID = sh.id
 master = gc.open("Experiment master list")
 masterID = master.id
