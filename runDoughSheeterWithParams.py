@@ -182,7 +182,7 @@ def runExperiment(listOfParam):
 
     #########################
     # Change direction !!!!!!!!!!!!!
-    time.sleep(1)
+    #time.sleep(1)
     print "Change direction"
     #########################
 
@@ -275,4 +275,5 @@ for i in range(1,passNum+1):
 
 # closing open functions
 f.close()
+time.sleep(1)
 phidgets.stopLoadCells()
