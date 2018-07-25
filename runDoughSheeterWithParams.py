@@ -269,9 +269,7 @@ i=1
 for i in range(1,passNum+1):
     runExperiment(param[i])
     print ("completed pass " + str(i))
-    if i== passNum:
-	print ("stop the for loop")
-        break
+
 
 # closing open functions
 f.close()
