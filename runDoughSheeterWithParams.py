@@ -4,7 +4,7 @@ import sys
 sys.path.append('phidgetsClass/')
 sys.path.append('laserClass/')
 
-# Import library modules
+# Import modules
 from threading import Thread
 from datetime import datetime
 import time
@@ -23,10 +23,11 @@ import csv
 # FUNCTIONS
 ######################################################################################################
 
+
 # To run each pass - read experiment parameters from parameter.csv, 
 #which reads from the coverSheet of the experiment workbook
 def runExperiment(listOfParam):
-    # for the first pass, the stepper should be initialized by running phidgets.initStepper()
+    # for first pass, the stepper should be initialized
     passNumber = listOfParam[0]
     if passNumber =='1':
         # 0 - Init the stepper motor
@@ -86,45 +87,32 @@ def runExperiment(listOfParam):
     #######################
     # 3 - Start the rollers
     print "Start the rollers"
-    if passNumber =='1':
-        phidgets.set_rsFileName(expPath + "rollers_0.txt")
-        thread_r = Thread(target=phidgets.runMotorsLoop, args=(rollerDir,float(listOfParam[3]),))
-        thread_r.start()
-        f.write(str(time.time() - start) + ': Rollers started\n')
-    else:
-        phidgets.set_rsFileName(expPath + "rollers_1.txt")
-        thread_r = Thread(target=phidgets.runMotorsLoop, args=(rollerDir,float(listOfParam[3]),))
-        thread_r.start()
-        f.write(str(time.time() - start) + ': Rollers started\n')
+    phidgets.set_rsFileName(expPath + "rollers_"+passNumber+".txt")
+    thread_r = Thread(target=phidgets.runMotorsLoop, args=(rollerDir,float(listOfParam[3]),))
+    thread_r.start()
+    f.write(str(time.time() - start) + ': Rollers started\n')
 
     #########################
     # 4 - Start the conveyors 
     print "Start the conveyors"
-    if passNumber =='1':
-        phidgets.set_csFileName(expPath + "conveyor_0.txt")
-        thread_c = Thread(target=phidgets.runConveyors, args=(belt0Dir,int(listOfParam[4]),belt1Dir,int(listOfParam[5])))
-        thread_c.start()
-        f.write(str(time.time() - start) + ': Conveyors started\n')
+    phidgets.set_csFileName(expPath + "conveyor_"+ passNumber +".txt")
+    thread_c = Thread(target=phidgets.runConveyors, args=(belt0Dir,int(listOfParam[4]),belt1Dir,int(listOfParam[5])))
+    thread_c.start()
+    f.write(str(time.time() - start) + ': Conveyors started\n')
 
-    else:
-        phidgets.set_csFileName(expPath + "conveyor_1.txt")
-        thread_c = Thread(target=phidgets.runConveyors, args=(belt0Dir,int(listOfParam[4]),belt1Dir,int(listOfParam[5])))
-        thread_c.start()
-        f.write(str(time.time() - start) + ': Conveyors started\n')
+   
     #########################
     # WAIT !!!!!!!!!!!
     # Data acquisition
-    
+    # Laser 0 is the output and stops automatically
     while laser0.get_acquisition() == True:
         dumb = 1
     print "End of acquisition " + passNumber
-    
+    # Laser is input and has to be stopped in the code
     if direction == 1:
-	# Laser 0 is the output and stops automatically
         while laser0.get_acquisition() == True:
             dumb = 1
         print "End of acquisition " + passNumber
-	# Laser 1 is input and has to be stopped in the code
         laser1.stopAcquisition()
         if laser0.get_error() > 0:
             phidgets.cleanConnection()
@@ -141,12 +129,10 @@ def runExperiment(listOfParam):
             phidgets.stopStepper()
             sys.exit(0)
     if direction == 2:
-	# Laser 1 is the output and stops automatically
         while laser1.get_acquisition() == True:
 	    dumb = 1
         print "End of acquisition " + passNumber
         laser0.stopAcquisition()
-	# Laser 0 is input and has to be stopped in the code
 
         if laser0.get_error() > 0:
             phidgets.cleanConnection()
@@ -182,7 +168,7 @@ def runExperiment(listOfParam):
 
     #########################
     # Change direction !!!!!!!!!!!!!
-    #time.sleep(1)
+    # time.sleep(1)
     print "Change direction"
     #########################
 
@@ -267,11 +253,26 @@ start = time.time()
 passNum =int(param[0][1])
 i=1
 for i in range(1,passNum+1):
+    print ("starting pass " +str(i))
+    print (param[i])	
     runExperiment(param[i])
     print ("completed pass " + str(i))
-
+    if i== passNum:
+	print ("stop the for loop")
+        break
 
 # closing open functions
-f.close()
 time.sleep(1)
+f.close()
 phidgets.stopLoadCells()
+
+
+
+
+
+
+
+
+
+
+

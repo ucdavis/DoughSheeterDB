@@ -123,20 +123,20 @@ def runExperiment(listOfParam):
     print "End of acquisition"
   
 
-        if laser0.get_error() > 0:
-            phidgets.cleanConnection()
-            phidgets.stopLoadCells()
-            phidgets.stopMotorsLoop()
-            phidgets.stopConveyors()
-            phidgets.stopStepper()
-            sys.exit(0)
-        if laser1.get_error() > 0:
-            phidgets.cleanConnection()
-            phidgets.stopLoadCells()
-            phidgets.stopMotorsLoop()
-            phidgets.stopConveyors()
-            phidgets.stopStepper()
-            sys.exit(0)
+    if laser0.get_error() > 0:
+        phidgets.cleanConnection()
+        phidgets.stopLoadCells()
+        phidgets.stopMotorsLoop()
+        phidgets.stopConveyors()
+        phidgets.stopStepper()
+        sys.exit(0)
+    if laser1.get_error() > 0:
+        phidgets.cleanConnection()
+        phidgets.stopLoadCells()
+        phidgets.stopMotorsLoop()
+        phidgets.stopConveyors()
+        phidgets.stopStepper()
+        sys.exit(0)
 
     #########################
     # 5 - Stop the conveyors
@@ -166,14 +166,14 @@ def runExperiment(listOfParam):
 # To manage interruption
 #######################################
 def signal_handler(signal, frame):
-        print('Stop the system!')
-        phidgets.stopLoadCells()
-        phidgets.stopMotorsLoop()
-        phidgets.stopConveyors()
-        phidgets.stopStepper()
-        laser0.stopAcquisition()
-        laser1.stopAcquisition()
-        sys.exit(0)
+    print('Stop the system!')
+    phidgets.stopLoadCells()
+    phidgets.stopMotorsLoop()
+    phidgets.stopConveyors()
+    phidgets.stopStepper()
+    laser0.stopAcquisition()
+    laser1.stopAcquisition()
+    sys.exit(0)
 signal.signal(signal.SIGINT, signal_handler)
 
 
@@ -235,6 +235,7 @@ f.write('Log file: ' + expDateTime + '\n')
 
 # Start the timestamp
 start = time.time()
+f.write(str(start) + ': Expt started\n')
 
 
 # run all the passes by calling runExperiment function
