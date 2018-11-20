@@ -1,0 +1,2 @@
+import analogicOutputClass_ext
+obj=analogicOutputClass_ext.analogicOutputClass()

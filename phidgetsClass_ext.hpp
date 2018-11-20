@@ -150,8 +150,8 @@ class phidgetsClass{
   std::string lcFileName;
 
   // Ratio to convert from volt to newton
-float slopeRatio = -10806646.6;
-float initialVoltage = -14888.1;
+float slopeRatio = -10671949.0;
+float initialVoltage = -14816.4;
   //float voltToGram_a = -11221.6;
   //float voltToGram_b = 18680.7;
   float gramToNewton = 0.0098;

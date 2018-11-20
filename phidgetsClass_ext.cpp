@@ -751,6 +751,7 @@ void phidgetsClass::stopLoadCells()
    saveLoadCells = false;
 }
 
+
 void phidgetsClass::set_lcFileName(std::string name)
 {
    lcFileName = name;
