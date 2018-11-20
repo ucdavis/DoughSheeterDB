@@ -1,6 +1,3 @@
-#Library to write and edit csv files
-import csv
-#Library to link to google sheets with google API
 import pygsheets
 #Library for array manipulation
 import numpy as np
@@ -13,25 +10,14 @@ gc = pygsheets.authorize("client_secret.json")
 
 # Experiment enter meta-data (sponsor name, flour type, the time the experiment starts)
 # all meta-data is the concatenated and become the title of the google workbook for the experiment
-sponsorType = input("what is the sponsor name? enter 1 if Ardent")
-if sponsorType == "1":
-    sponsor = "Ardent"
-else:
-    sponsor = sponsorType
+with open('SpreadsheetKey.csv', 'r', newline='') as csv_file:
+    csv_reader = csv.reader(csv_file)
+    key=[row for row in csv_reader]
+    print (key)
 
-flourType = input('what is the flour type? enter 1 for allPurpose; 2 for breadFlour ')
-if flourType == "1":
-    flour = "allPurpose"
-elif flourType == "2":
-    flour = "breadFlour"
-else:
-    flour = flourType
-time = input('when did the experiment start? %Y-%m-%d-%H-%M')
-fileName = sponsor+ '-'+flour+"-"+time
+sh = gc.open_by_key(key[0][0])
+sponsor = key[0][1]
 
-
-# open google workbook (created above) by its title and get handle
-sh = gc.open(fileName)
 # use handle to access coverSheet in the workbook 
 coverSheet = sh.worksheet_by_title('coverSheet')
 
@@ -63,6 +49,8 @@ masterID = master.id
 sponsorSh = gc.open(sponsor + " experiment list")
 coverSheet = sh.worksheet_by_title('coverSheet')
 passNumber = int(coverSheet.cell('B9').value)
+time = coverSheet.cell('B5').value
+flour = coverSheet.cell('B7').value
 
 # write experiment sponsor name, time, type of flour, pass number, and url of the workbook to the "master experiment list" sheet
 # write experiment time, type of flour, pass number, and url of the workbook to the "sponsor's experiment list" sheet

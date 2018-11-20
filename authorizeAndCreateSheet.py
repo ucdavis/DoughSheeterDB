@@ -34,30 +34,35 @@ else:
 
 time = datetime.now().strftime('%Y-%m-%d-%H-%M')
 
-#Concatenate meta-data(sponsor+flour+time) to create file name of google sheet 
+
+#Concatenate meta-data(sponsor+flour+time) to create file name of google sheet
 # to which experiment data will be stored.
 fileName = sponsor+ '-'+flour+"-"+time
 
-#Store newly created file in folder specific to the Sponsor 
+#Store newly created file in folder specific to the Sponsor
 #Any new sponsors should be added here
-#Each folder is identified by folder address, which is found in the the googledrive hyperlink. 
+#Each folder is identified by folder address, which is found in the the googledrive hyperlink.
 if sponsor == "Ardent":
     parent = "1cMT_LlBnU2BDa0T0Fti6uVoewEHV3ll-"
-else: 
+else:
     parent = "1YVG4T-0uPaubnIIi0-rMgUItSDt67OOm"
 sh = gc.create(fileName, parent_id = parent)
 
+with open('SpreadsheetKey.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    # Store the key of the spreadsheet in csv file
+    writer.writerow([sh.id,sponsor])
 
 # Access Template Spreadsheet to copy to new google sheet - "Cover Sheet" and "Parameter choices"
 # These are standard sheets for every experiment and contain data about experimental settings and materials
 template = gc.open("Dough Sheeter Spreadsheet Templates")
 templateID = template.id
-coverFrTemplateID = template.worksheet_by_title('coverSheet').id
-coverSheet = sh.add_worksheet('coverSheet', rows=100, cols=10, src_tuple=[templateID,coverFrTemplateID], index=1)
-coverSheet.update_cell("B5", time)
 #copy parameter choices
 paraChID = template.worksheet_by_title('parameter choices').id
 sh.add_worksheet('parameter choices', rows=100, cols=10, src_tuple=[templateID,paraChID], index=2)
+coverFrTemplateID = template.worksheet_by_title('coverSheet').id
+coverSheet = sh.add_worksheet('coverSheet', rows=100, cols=10, src_tuple=[templateID,coverFrTemplateID], index=1)
+coverSheet.update_cell("B5", time)
 print ("fill out cover sheet")
 # delete blank sheet1
 sheet1 = sh.sheet1
